@@ -19,11 +19,11 @@ def main() -> None:
     
     clustered_topic_df = cluster_topic(topic_df)
     
-    # full_questions_df = generate_question(clustered_topic_df)
+    full_questions_df = generate_question(clustered_topic_df)
     
     # Save to csv
     clustered_topic_df.to_csv(output_dir_path / "topic_groups.csv", index=False)
-    # full_questions_df.to_csv(output_dir_path / "group_questions.csv", index=False)
+    full_questions_df.to_csv(output_dir_path / "group_questions.csv", index=False)
     
 if __name__ == "__main__":
     main()
