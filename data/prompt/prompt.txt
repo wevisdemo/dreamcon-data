@@ -1,0 +1,11 @@
+given this .csv file of discussions around the new constitution written by Thai citizen. 
+each row contains title column that express the view of participants. 
+Column `category` each category of title. 
+Column `group` clusters these title by their similarity. 
+Pretend that you are a Policy maker, what question does each group's title will answer. 
+Also summarize the theme of each group into a single concise phrase.
+Give me a concise question in Thai language per category and per group.
+Give me the result in csv format with columns `category`, `group`, `question`, and `phrase`.
+`category` column HAS TO BE string, the SAME AS the original data.
+`group` column HAS TO BE number, the SAME AS the original data.
+DO NOT put any comment or prefix in the result, put ONLY the content of the csv.

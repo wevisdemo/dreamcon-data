@@ -3,6 +3,7 @@ name = "dreamcon_data"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "google-genai>=2.23.0",
     "pandas",
     "python-dotenv>=1.2.3",
     "scikit-learn>=1.9.1",
