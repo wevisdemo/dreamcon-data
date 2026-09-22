@@ -14,5 +14,8 @@ def load_topic_data() -> pd.DataFrame:
     # Process categories
     df["category"] = df["categories"].str.split(r"\s*,\s*")
     df = df.explode("category", ignore_index=True)
+    
+    # Drop categories
+    df.drop(columns=['categories'], inplace=True)
 
     return df
