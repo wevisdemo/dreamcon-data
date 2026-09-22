@@ -114,5 +114,7 @@ def cluster_topic(topics_df: pd.DataFrame) -> pd.DataFrame:
         new_topics_df = pd.concat([new_topics_df, category_df], ignore_index=True)
         
         print("-------------------------------\n")
+    # Normalize group to int
+    new_topics_df['group'] = new_topics_df['group'].astype(int)
     
     return new_topics_df
