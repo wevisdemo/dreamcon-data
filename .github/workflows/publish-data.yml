@@ -52,3 +52,4 @@ jobs:
           fi
           git commit -m "chore: update published data"
           git push origin published-data
+          
