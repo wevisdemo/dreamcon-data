@@ -13,6 +13,7 @@ def main() -> None:
     
     # Check & Create output directory
     os.makedirs(data_dir_path, exist_ok=True)
+    os.makedirs(output_dir_path, exist_ok=True)
     
     # Load topic data
     topic_df = load_topic_data()
