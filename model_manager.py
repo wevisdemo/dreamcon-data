@@ -89,24 +89,30 @@ class ModelManager():
             sample_pdf = client.files.get(name=sample_pdf.name) # type: ignore
         print(f"Upload completed!!")
 
-        # try:
-        print(f"Process with {MODEL_NAME} ...")
-        response = client.models.generate_content(
-            model=MODEL_NAME,
-            contents=[
-                sample_pdf,
-                prompt
-            ],
-            config=types.GenerateContentConfig(
-                safety_settings=[
-                    types.SafetySetting(
-                        category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                        threshold=types.HarmBlockThreshold.BLOCK_NONE,
-                    ),
-                ],
-                temperature=temperature,
-        )
-        )
+        _try_count = 0
+        while _try_count < 3:
+            try:
+                print(f"Process with {MODEL_NAME} ...")
+                response = client.models.generate_content(
+                    model=MODEL_NAME,
+                    contents=[
+                        sample_pdf,
+                        prompt
+                    ],
+                    config=types.GenerateContentConfig(
+                        safety_settings=[
+                            types.SafetySetting(
+                                category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                                threshold=types.HarmBlockThreshold.BLOCK_NONE,
+                            ),
+                        ],
+                        temperature=temperature,
+                    )
+                )
+                break
+            except:
+                _try_count += 1
+                time.sleep(30)
         
         return pd.read_csv(StringIO(response.text))
         
