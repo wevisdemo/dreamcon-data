@@ -4,6 +4,7 @@ from pathlib import Path
 from data_loader import load_topic_data
 from agglo_cluster import cluster_topic
 from question_generator import generate_question
+from distance_calculator import calculate_question_distance
 
 data_dir_path = Path(__file__).resolve().parent / "data"
 output_dir_path = Path(__file__).resolve().parent / "output"
@@ -21,6 +22,8 @@ def main() -> None:
     clustered_topic_df = cluster_topic(topic_df)
     
     full_questions_df = generate_question(clustered_topic_df)
+    
+    clustered_topic_df = calculate_question_distance(clustered_topic_df, full_questions_df)
     
     # Save to csv
     clustered_topic_df.to_csv(output_dir_path / "topic_groups.csv", index=False)
