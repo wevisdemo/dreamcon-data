@@ -79,41 +79,53 @@ def optimize_agglomerative_clustering_k(
 def cluster_topic(topics_df: pd.DataFrame) -> pd.DataFrame:
     
     # Initialize new df with the same columns as topics_df
-    new_topics_df = pd.DataFrame(columns=topics_df.columns)
+    # We will also ensure 'group' exists so pd.concat works cleanly
+    columns = list(topics_df.columns)
+    if 'group' not in columns:
+        columns.append('group')
+    new_topics_df = pd.DataFrame(columns=columns)
     
     # Initialize embedding model
     model = ModelManager.get_embedding_model()
 
     for category in topics_df['category'].unique():
         
-        print(category)
-        category_df = topics_df[topics_df['category'] == category]
+        print(f"Category: {category}")
+        # Added .copy() to avoid pandas SettingWithCopyWarning later when assigning 'group'
+        category_df = topics_df[topics_df['category'] == category].copy()
         
         # Embeddings
         embeddings = model.encode(category_df['title'].to_list())
         
         result = optimize_agglomerative_clustering_k(
             embeddings, 
-            k_values=range(2, 10), # Tests 2, 3, 4 ... up to 20 clusters
+            k_values=range(2, 10), 
             metric='cosine',
             linkage='complete'
         )
         
         if not result:
-            continue
-        
-        best_labels = result['labels']
-        optimal_k = result['k']
+            # Treat every record in this category as one single cluster (labeled as 0)
+            print("No valid clustering found. Treating as a single cluster.")
+            best_labels = [0] * len(category_df)
+            optimal_k = 1
+        else:
+            best_labels = result['labels']
+            optimal_k = result['k']
         
         # Add group label
-        category_df.loc[category_df.index, ['group']] = best_labels
+        category_df['group'] = best_labels
         
+        print(f"Optimal K                         : {optimal_k}")
         print(f"Total row in DF                   : {len(category_df.index)}")
         
         # Merge DF
-        new_topics_df = pd.concat([new_topics_df, category_df], ignore_index=True)
+        # Drop empty DataFrame warning handling by making sure we don't concat empty improperly
+        if not new_topics_df.empty or not category_df.empty:
+            new_topics_df = pd.concat([new_topics_df, category_df], ignore_index=True)
         
         print("-------------------------------\n")
+        
     # Normalize group to int
     new_topics_df['group'] = new_topics_df['group'].astype(int)
     
