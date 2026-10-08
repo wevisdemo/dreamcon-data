@@ -9,3 +9,4 @@ Give me the result in csv format with columns `category`, `group`, `question`, a
 `category` column HAS TO BE string, the SAME AS the original data.
 `group` column HAS TO BE number, the SAME AS the original data.
 DO NOT put any comment or prefix in the result, put ONLY the content of the csv.
+Make sure to generate question and phrase for EVERY GROUP in ALL of these categories : 
