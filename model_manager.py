@@ -5,6 +5,7 @@ from google import genai
 from google.genai import types
 import pandas as pd
 from io import StringIO
+from constants import MODEL_NAME
 
 import functools # Important for preserving function metadata (like name, docstring)
 def ensure_min_duration(min_duration_seconds):
@@ -35,8 +36,6 @@ def ensure_min_duration(min_duration_seconds):
 
         return wrapper # The decorator returns the new wrapper function
     return decorator # The factory returns the decorator
-
-MODEL_NAME = "gemini-3-flash-preview"
 
 class ModelManager():
     
