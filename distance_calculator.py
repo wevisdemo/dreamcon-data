@@ -24,6 +24,6 @@ def calculate_question_distance(topic_df: pd.DataFrame, question_df: pd.DataFram
         axis=1
     )
     
-    df.drop(columns=['phrase'])
+    df.drop(columns=['phrase'], inplace=True)
     
     return df
