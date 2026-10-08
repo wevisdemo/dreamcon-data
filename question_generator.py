@@ -13,6 +13,17 @@ def generate_question(df: pd.DataFrame, prompt_path:str|None=None) -> pd.DataFra
             PROMPT = file.read()
     else:
         PROMPT = ""
+        
+    # Modify propmt to ensure categories
+    PROMPT += str(", ".join(
+        [f"`{_}`" for _ in df['category'].unique()]
+    )).strip(", ")
+    
+    expected_total_rows = df.groupby(['category', 'group']).size()
+    
+    PROMPT += f"\nTotal rows of the result have to be : {expected_total_rows}"
+    
+    print(PROMPT)    
     
     # Create temp .txt file
     with tempfile.NamedTemporaryFile(suffix=".csv", mode='w+t', delete=True) as tf:
