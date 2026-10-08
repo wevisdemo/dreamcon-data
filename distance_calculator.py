@@ -11,19 +11,19 @@ def get_text_distance(text1: str, text2: str) -> float:
 
 def calculate_question_distance(topic_df: pd.DataFrame, question_df: pd.DataFrame) -> pd.DataFrame:
     df = topic_df.merge(
-        question_df[['category', 'group', 'question']], 
+        question_df[['category', 'group', 'phrase']], 
         on=['category', 'group'], 
         how='left'
     )
     
-    df['question'] = df['question'].fillna("")
+    df['phrase'] = df['phrase'].fillna("")
     
     # Apply the distance function row-by-row (note the axis=1)
-    df['embedded_distance_to_question'] = df.apply(
-        lambda row: get_text_distance(row['title'], row['question']),
+    df['embedded_distance_to_phrase'] = df.apply(
+        lambda row: get_text_distance(row['title'], row['phrase']),
         axis=1
     )
     
-    df.drop(columns=['question'])
+    df.drop(columns=['phrase'])
     
     return df
