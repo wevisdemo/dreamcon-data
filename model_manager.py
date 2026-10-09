@@ -109,8 +109,9 @@ class ModelManager():
                     )
                 )
                 break
-            except:
+            except Exception as er:
                 _try_count += 1
+                print(f"Encounter error : {er}")
                 time.sleep(30)
         
         return pd.read_csv(StringIO(response.text))
